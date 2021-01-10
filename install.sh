@@ -6,29 +6,13 @@ export CONFIG_PATH="${ROOT_PATH}/config"
 # Update Ubuntu and get standard repository programs
 sudo apt update && sudo apt full-upgrade -y
 
-function add {
-  which $1 &> /dev/null
-
-  if [ $? -ne 0 ]; then
-    echo "Installing: ${1}..."
-    sudo apt install -y $1
-  else
-    echo "Already installed: ${1}"
-  fi
-}
-export add
-source add
-
-# TODO: Add more dependencies / Isolate in another file
-add git
-add htop
-add curl
-add build-essential
-add wget
-add libcanberra-gtk-module
+echo "==============================================================="
+echo "                  INSTALLING DEV DEPENDENCIES"
+echo "==============================================================="
+bin/deps.sh
 
 # Install zsh and set as default shell
-add zsh
+sudo apt install -y zsh
 chsh -s $(which zsh)
 
 # if [ "${SHELL}" != "`which zsh`" ]; then
@@ -48,8 +32,6 @@ echo "                  CONFIG FILES"
 echo "==============================================================="
 
 bin/copy.sh
-
-
 
 echo "==============================================================="
 echo "                  INSTALLING PROGRAMS"
