@@ -1,12 +1,20 @@
 #!/bin/bash
+echo "======= Installing VSCode ======"
+downloads_path="$HOME/Downloads"
 
-sudo apt install -y software-properties-common apt-transport-https wget
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-# sudo install packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-
-sudo apt update
-sudo apt install -y code
+if ! which "code" ; then
+  microsoft_gpg_download_path="$downloads_path"/microsoft.gpg
+  curl https://packages.microsoft.com/keys/microsoft.asc \
+  | gpg --dearmor > "$microsoft_gpg_download_path"
+  sudo cp "$microsoft_gpg_download_path" "/etc/apt/trusted.gpg.d/microsoft.gpg"
+  sudo sh -c 'echo "deb [arch=amd64] \
+  https://packages.microsoft.com/repos/vscode stable main" \
+  > /etc/apt/sources.list.d/vscode.list'
+  sudo apt-get update
+  sudo apt-get install -y code
+else
+  echo vscode installed at $(which code)
+fi
 
 # TODO: Add extensions via cli
 # https://stackoverflow.com/questions/34286515/how-to-install-visual-studio-code-extensions-from-command-line
