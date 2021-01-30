@@ -25,3 +25,4 @@ source $HOME/.asdf/asdf.sh;
 
 asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git;
 asdf plugin-add node https://github.com/asdf-vm/asdf-nodejs.git;
+bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
