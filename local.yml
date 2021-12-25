@@ -24,6 +24,5 @@
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
-    # - include: tasks/users.yml
-    # - include: tasks/cron.yml
     - include: tasks/packages.yml
+    - include: tasks/docker.yml

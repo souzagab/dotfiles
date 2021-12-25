@@ -12,12 +12,12 @@ if [ "$(id -u)" -eq "0" ]; then
 	exit 1
 fi
 
-# Only supports Debian based distros
+# Only supports Debian
 # TODO: Support to Arch distros
-# if [ "$(id -u)" -eq "0" ]; then
-# 	>&2 echo "[ERROR] Run as normal user"
-# 	exit 1
-# fi
+if ! [ "$(lsb_release -is)" -eq "Debian" ]; then
+	>&2 echo "[ERROR] Only supports Debian"
+	exit 1
+fi
 
 sudo DEBIAN_FRONTEND=noninteractive apt update -qq
 sudo apt install --no-install-recommends --no-install-suggests -y \
