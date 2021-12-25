@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+
+  pre_tasks:
+    # TODO: Support to Arch distros
+    # - name: pre-run | update package cache (arch)
+    #   tags: always
+    #   pacman: update_cache=yes
+    #   changed_when: False
+    #   when: ansible_distribution in ["Archlinux", "Manjaro"]
+
+    - name: pre-run | update package cache (apt)
+      tags: always
+      apt: update_cache=yes
+      changed_when: False
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: pre-run | update package cache (apt)
+      tags: always
+      apt: upgrade=yes
+      changed_when: False
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+  tasks:
+    - include: tasks/packages.yml
+    - include: tasks/docker.yml

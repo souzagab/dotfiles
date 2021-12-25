@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -eu
+
+if ! command -v sudo >/dev/null 2>&1; then
+	>&2 echo "[ERROR] 'sudo' is required to be installed"
+	exit 1
+fi
+
+if [ "$(id -u)" -eq "0" ]; then
+	>&2 echo "[ERROR] Run as normal user"
+	exit 1
+fi
+
+# Only supports Debian
+# TODO: Support to Arch distros
+if ! [ "$(lsb_release -is)" -eq "Debian" ]; then
+	>&2 echo "[ERROR] Only supports Debian"
+	exit 1
+fi
+
+sudo DEBIAN_FRONTEND=noninteractive apt update -qq
+sudo apt install --no-install-recommends --no-install-suggests -y \
+	git ansible
+
+sudo ansible-pull -U https://github.com/souzagab/dotfiles.git
